@@ -43,14 +43,20 @@ pipeline {
         stage('Pull docker image on host') {
             steps {
                 sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "cat ~/docker_password.txt | docker login --username nikolancaid --password-stdin"'
-                sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker rm -f $(docker ps -aq)"'
+
+                try {
+                    sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker rm -f service-registry"'
+                } catch (Exception e) {
+                    sh 'echo ======= Failed to delete container service-registry'
+                }
+
                 sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker pull nikolancaid/service-registry:latest"'
             }
         }
 
         stage('Start the application'){
             steps {
-                sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker run -p 8761:8761 -d nikolancaid/service-registry:latest"'
+                sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker run --name service-registry -p 8761:8761 -d nikolancaid/service-registry:latest"'
             }
         }
     }
