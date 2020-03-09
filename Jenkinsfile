@@ -44,10 +44,12 @@ pipeline {
             steps {
                 sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "cat ~/docker_password.txt | docker login --username nikolancaid --password-stdin"'
 
-                try {
-                    sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker rm -f service-registry"'
-                } catch (Exception e) {
-                    sh 'echo ======= Failed to delete container service-registry'
+                script {
+                    try {
+                        sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker rm -f service-registry"'
+                    } catch (Exception e) {
+                        sh 'echo ======= Failed to delete container service-registry'
+                    }
                 }
 
                 sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker pull nikolancaid/service-registry:latest"'
