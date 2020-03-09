@@ -43,7 +43,7 @@ pipeline {
         stage('Pull docker image on host') {
             steps {
                 sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "cat ~/docker_password.txt | docker login --username nikolancaid --password-stdin"'
-                sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker rm -f $(docker ps -aq)'
+                sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker rm -f $(docker ps -aq)"'
                 sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker pull nikolancaid/service-registry:latest"'
             }
         }
