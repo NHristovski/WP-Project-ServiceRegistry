@@ -4,12 +4,6 @@ pipeline {
         registryCredential = 'dockerhub'
         dockerImage = ''
 
-        def remote = [:]
-        remote.name = 'test'
-        remote.host = '10.10.10.57'
-        remote.user = 'root'
-        remote.password = '#Jassum1234'
-        remote.allowAnyHosts = true
     }
     agent any
 
@@ -44,6 +38,13 @@ pipeline {
             }
         }
 
+        def remote = [:]
+        remote.name = 'test'
+        remote.host = '10.10.10.57'
+        remote.user = 'root'
+        remote.password = '#Jassum1234'
+        remote.allowAnyHosts = true
+        
         stage('Pull and start docker image on host'){
             steps{
                 sshCommand remote: remote, command: "docker login -u nikolancaid -p jassum123"
