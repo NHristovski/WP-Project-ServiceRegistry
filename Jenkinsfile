@@ -1,10 +1,3 @@
-def remote = [:]
-remote.name = 'test'
-remote.host = '10.10.10.57'
-remote.user = 'root'
-remote.password = '#Jassum1234'
-remote.allowAnyHosts = true
-
 pipeline {
 
     environment {
@@ -45,14 +38,14 @@ pipeline {
                 sh "docker rmi $registry:latest"
             }
         }
-
-
+        
         stage('Pull and start docker image on host'){
-
             steps{
-                sshCommand remote: remote, command: "docker login -u nikolancaid -p jassum123"
-                sshCommand remote: remote, command: "docker pull $registry:latest"
-                sshCommand remote: remote, command: "docker start -p 8761:8761 $registry:latest"
+                sshagent(credentials : ['ssh-creds']) {
+                    sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker login -u nikolancaid -p jassum123"'
+                    sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker pull nikolancaid/service-registry:latest"'
+                    sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker start -p 8761:8761 nikolancaid/service-registry:latest"'
+                }
             }
         }
     }
