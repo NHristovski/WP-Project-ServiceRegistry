@@ -1,4 +1,12 @@
 pipeline {
+
+    def remote = [:]
+    remote.name = 'test'
+    remote.host = '10.10.10.57'
+    remote.user = 'root'
+    remote.password = '#Jassum1234'
+    remote.allowAnyHosts = true
+
     environment {
         registry = "nikolancaid/service-registry"
         registryCredential = 'dockerhub'
@@ -41,13 +49,6 @@ pipeline {
 
         stage('Pull and start docker image on host'){
 
-            def remote = [:]
-            remote.name = 'test'
-            remote.host = '10.10.10.57'
-            remote.user = 'root'
-            remote.password = '#Jassum1234'
-            remote.allowAnyHosts = true
-            
             steps{
                 sshCommand remote: remote, command: "docker login -u nikolancaid -p jassum123"
                 sshCommand remote: remote, command: "docker pull $registry:latest"
