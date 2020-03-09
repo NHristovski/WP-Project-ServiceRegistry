@@ -43,8 +43,7 @@ pipeline {
             steps {
                 sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker login -u nikolancaid -p jassum123"'
                 sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker pull nikolancaid/service-registry:latest"'
-                sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker start -p 8761:8761 nikolancaid/service-registry:latest"'
-
+                sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker run -p 8761:8761 -d nikolancaid/service-registry:latest"'
             }
         }
     }
