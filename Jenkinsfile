@@ -39,10 +39,17 @@ pipeline {
             }
         }
 
-        stage('Pull and start docker image on host') {
+
+        stage('Pull docker image on host') {
             steps {
-                sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker login -u nikolancaid -p jassum123"'
+                sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "cat ~/docker_password.txt | docker login --username nikolancaid --password-stdin"'
+                sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker rm -f $(docker ps -aq)'
                 sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker pull nikolancaid/service-registry:latest"'
+            }
+        }
+
+        stage('Start the application'){
+            steps {
                 sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker run -p 8761:8761 -d nikolancaid/service-registry:latest"'
             }
         }
