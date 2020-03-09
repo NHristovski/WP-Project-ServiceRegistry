@@ -1,11 +1,11 @@
-pipeline {
+def remote = [:]
+remote.name = 'test'
+remote.host = '10.10.10.57'
+remote.user = 'root'
+remote.password = '#Jassum1234'
+remote.allowAnyHosts = true
 
-    def remote = [:]
-    remote.name = 'test'
-    remote.host = '10.10.10.57'
-    remote.user = 'root'
-    remote.password = '#Jassum1234'
-    remote.allowAnyHosts = true
+pipeline {
 
     environment {
         registry = "nikolancaid/service-registry"
