@@ -55,10 +55,10 @@ pipeline {
                 sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker pull nikolancaid/service-registry:latest"'
             }
         }
-
+        
         stage('Start the application'){
             steps {
-                sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker run --name service-registry -p 8761:8761 -d nikolancaid/service-registry:latest"'
+                sh 'ssh -o StrictHostKeyChecking=no nhristov@10.10.10.57 "docker run --name service-registry --network=host -d nikolancaid/service-registry:latest"'
             }
         }
     }
